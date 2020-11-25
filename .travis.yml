@@ -1,7 +1,13 @@
+language:
+  - "node_js"
+node_js:
+  - "8"
 script:
   - "yarn test"
 cache:
-  - yarn
+  yarn: true
+  directories:
+    - node_modules
 deploy:
 - provider: s3
   access_key_id: KIAT7F3WHF7OL6JBHXL
@@ -22,6 +28,6 @@ deploy:
   application: noted-base
   deployment_group: ''
   on: *2
-  skip_cleanup: 'true'
+  cleanup: 'true'
 before_deploy:
 - yarn run build
