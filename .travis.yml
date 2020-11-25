@@ -1,27 +1,40 @@
 language: node_js
 node_js:
-  - '8'
+- '8'
 os: linux
 dist:
-  - bionic
-  - xenial
+- bionic
+- xenial
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 script:
-  - yarn test
+- yarn test
 before_deploy:
   - yarn global add travis-ci-cloudfront-invalidation
   - yarn run build
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: $S3_BUCKET
-  cleanup: true
+- provider: s3
+  access_key_id: AKIAT7F3WHF7OL6JBHXL
+  secret_access_key: &1
+    secure: C1k2jWpRN1DyoyV07K8IElxKWf8HG+4rtr2v77H69+B3PTcb1YchlcO8dgIfUtcWDtZQuxkesIF8JWUQHpcFLD0XEAGC8QCMA3SnN5y91ic+fK4ydXmQtb9MQbAlhvgc+9VbJo2Ry70uRzT77kENDn71ZDA048s/ltlqR7ZaW7nQDUELdVq0Z0TGHkeXyG7eZ+ZaTPtTcz1ygj5rsXLiSC35UKd/Od2xdoNkbWEZ0cmiL/pIOpP4VVCvvfMkO+MG1y0tPdmNMPO1FP3uXD4q9uSBjp3+Sh0/Ai9cHf8t/A6cdBT37lH0Rpukc5KTL/3uM64dahHlfcqN9UpZn3YdosoHj96t44H4v4OCnznGQ7mh06uKX6TcZNDibin4nj5+92VLP1k2251b+KyW8R0CfgN4S3kcBI+I8jRGwGPEw3qNzA9kmQDZE4P36s0vgka7MwR7lrhQOy+GGxL9dg3epKp1xwsED43VaaSYRQhdApefcINilksm/QeFCMcdJlPMqYj+43hr6eTI55oooEZeIk4YSDeNIzPF1OFoqiJJmTPPIMtPt2YY9xUJorwAzjU8eJIC0RJ4RaDb10VMmqKnaZ5nLgNmqvgBtr/LA97tybCPrPg1s4LRbfIVNqmenlBVp2+PK0CO8wRCAWMgmnKC359y+NkoT1Os+bEyDZtxn3w=
   local_dir: dist
-  on:
+  skip_cleanup: true
+  on: &2
+    repo: GuilhermeLLS/noted-base
     branch: main
+  bucket: frontend-masters-course
+- provider: codedeploy
+  access_key_id: AKIAT7F3WHF7OL6JBHXL
+  secret_access_key: *1
+  bucket: frontend-masters-course
+  key: ''
+  bundle_type: ''
+  application: noted-base
+  deployment_group: ''
+  on: *2
+  skip_cleanup: 'true'
 after_deploy:
-  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -c $CLOUDFRONT_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+- travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY
+  -c $CLOUDFRONT_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
