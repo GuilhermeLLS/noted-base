@@ -23,7 +23,6 @@ deploy:
   access_key_id: KIAT7F3WHF7OL6JBHXL
   secret_access_key: *1
   bucket: frontend-masters-course
-  key: ''
   bundle_type: ''
   application: noted-base
   deployment_group: ''
