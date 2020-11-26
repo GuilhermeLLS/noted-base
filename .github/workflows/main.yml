@@ -47,7 +47,7 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 sync . s3://frontend-masters-course --acl public-read
+        run: aws s3 cp dist/ s3://frontend-masters-course --recursive
         working-directory: noted-base-build
   release:
     runs-on: ubuntu-latest
