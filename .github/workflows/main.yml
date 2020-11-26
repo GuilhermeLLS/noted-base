@@ -51,7 +51,7 @@ jobs:
         run: cd noted-base-build && ls
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 cp noted-base-build/ s3://frontend-masters-course --recursive
+        run: aws s3 cp . s3://frontend-masters-course --recursive
         working-directory: noted-base-build
   release:
     runs-on: ubuntu-latest
